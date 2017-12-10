@@ -1,1 +1,85 @@
-bonjour marianne c moi
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//FR" >
+
+<html lang="fr">
+  <head>
+    <meta charset="utf-8">
+    <title>Générateur d'identité</title> 													<!-- TITRE -->
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js"></script>
+  </head>
+  <body onload="createDot()">
+	<div id="contour">
+		<div id="banniere">
+			<h1>GÉNÉRER UNE IDENTITÉ</h1>
+		<div>
+		<div id="genreSelecteur">
+			<h2> Vous êtes :</h2>
+			<form action="" style="align-content: center">
+				<input type="radio" name="gender" value="female" id="radioFemme"><label id="radioText" for="radioFemme"> UNE FEMME</label> <br>
+				<input  type="radio" name="gender" value="male" id="radioHomme"><label id="radioText" for="radioHomme"> UN HOMME</label>
+			</form>
+			<button type="button" id="button">GÉNÉRER</button>
+
+		</div>
+		<div id="cover"></div>
+	</div>
+  </body>
+  
+  <script>
+  </script>
+  
+  <style>
+	@font-face {
+	  font-family: 'lemon';
+	  src: url('LemonMilk.otf');
+	}
+	#contour {
+		margin: 20px;
+		padding: 10px;
+		border-style: solid;
+		border-width: 5px;
+		border-color: white;
+	}
+	body {
+		background-color: black
+	}
+	#banniere {
+		
+	}
+	#genreSelecteur {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		flex-direction: column;
+
+	}
+	h1 {
+		text-align: center;
+		color: white;
+		font-family: "lemon";
+		font-size: 300%;
+	}
+	h2 {
+		text-align: center;
+		color: white;
+		font-family: "lemon";
+		font-size: 200%;
+	}
+	#radioText {
+		text-align: center;
+		color: white;
+		font-family: "lemon";
+		font-size: 150%;
+	}
+	#button {
+		color: black;
+		background-color: white;
+		border-style: outset;
+		border-width: 5px;
+		border-color: grey;
+		font-family: "lemon";
+		font-size: 200%;
+		margin: 10px;
+	}
+  </style>
+</html>
