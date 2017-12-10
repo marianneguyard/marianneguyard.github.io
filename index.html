@@ -62,7 +62,10 @@
 			} while (!response)
 			return (response)
 		}
-		document.getElementById("name").innerHTML  = requestID(gender).name.first
+		var name = requestID(gender).name.first
+
+		document.getElementById("name").innerHTML  = name
+		console.log(name)
 	}
 	function recommencer() {
 		document.getElementById("generated").style.display = 'none'
@@ -92,7 +95,7 @@
 	}
 
 	#face {
-		height: 70%;
+		height: 60%;
 	}
 	#genreSelecteur {
 		display: flex;
