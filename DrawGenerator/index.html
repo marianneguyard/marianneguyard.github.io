@@ -71,17 +71,18 @@ function copyToBack() {
 	ctx.clearRect(0, 0, canvas.width, canvas.height);
 }
 
-var minSec = 3
-var maxSec = 6
+var minSec = 30
+var maxSec = 60
 function changePicture() {
 	var url = "";
 	var w = 1280;
 	var h = 720;
 	switch (Math.floor(Math.random() * 3)) {
-	case 1: url =  "https://source.unsplash.com/user/erondu/" + w + "x" + h; break;
+	case 1: url =  "https://source.unsplash.com/random/" + w + "x" + h; break;
 	case 2: url = "https://picsum.photos/" + w + "/" + h + "/?random";break
 	case 3: url = "http://lorempixel.com/g/" + w + "/" + h + "/";break
 	default:url = "http://lorempixel.com/g/" + w + "/" + h + "/";}
+	console.log(url)
 	$('picture').src = url + "#" + new Date().getTime();
 	var offscreen_data = ctx.getImageData(0, 0, canvas.width, canvas.height);
 	copyToBack()
@@ -154,9 +155,6 @@ saveB.onclick = function() {
 	Canvas2Image.saveAsPNG(canvasBack);
 }
 
-//Effacer
-//Sauver
-//Gomme + grosse que pinceau
 
 </script>
 
