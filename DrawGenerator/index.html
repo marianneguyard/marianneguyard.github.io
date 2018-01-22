@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+<head>
+ <title>Generateur de dessin</title>
+</head>
+<body onmousemove="mouse_position(event)">
+      
+<div class="canvas-container" style="width: 1280px; height: 720px; position: relative; top: 100px; left: 100px; -moz-user-select: none;">
+<img id="picture" >
+<img id="pictureBack" src="img/back.png">
+<canvas id="c" width="1280" height="720" style="border: 1px solid rgb(170, 170, 170); position: absolute; width: 1280px; height: 720px; left: 0px; top: 0px;" />
+</div>
+<canvas id="a" width="1280" height="720" style="border: 1px solid rgb(170, 170, 170); position: absolute; width: 1280; height: 720; left: 108px; top: 108px;" ></canvas>
+
+<div style="position: absolute; top: 840px; left: 100px; margin-top: 10px; display:flex; flex-direction: row; justify-content: left; align-items: center, background-color: black">  
+  <input type="image" src="img/gomme.png" id="erase" style="width: 50px; height:50px;" />
+  <input type="image" src="img/save.png" id="save" style="width: 50px; height:50px;" />
+  <input type="image" src="img/trash.png" id="clear" style="width: 50px; height:50px;" />
+</div>
+
+<script src="js/canvas2image.js"></script>
+
+<script id="main">
+  var $ = function(id){return document.getElementById(id)};
+  var clearEl = $('clear-canvas');
+	  var writeB = $('write')
+	  var clearB = $('clear')
+	  var saveB =  $('save')
+	  var canvas = document.getElementById("a");
+var canvasBack = document.getElementById("c");
+var ctxBack = canvasBack.getContext("2d");
+var ctx = canvas.getContext("2d");
+var drawing = false;
+var drawingMode = "add";
+var pencilWidth = 1;
+var gommeWidth = 15;
+var base64Str = "";
+var fillColor = "rgba(0,0,0, 1)";
+ctx.strokeStyle = fillColor;
+ctx.lineWidth = pencilWidth;
+ctx.lineCap="round";
+var last = {x : -1, y: 0}
+var mouse = {x: 0, y: 0}
+
+var getMouseCoordinate = function (evt) {
+	return {
+    x : evt.pageX - 108,
+    y : evt.pageY - 108
+  };
+};
+function mouse_position(e)
+{
+	mouse = getMouseCoordinate(e)
+	
+}
+
+var mouseDown = 0;
+document.body.onmousedown = function() { 
+  mouseDown = 1;
+}
+document.body.onmouseup = function() {
+  mouseDown = 0;
+}
+
+function copyToBack() {
+	ctx.globalCompositeOperation = "destination-out";
+	ctxBack.drawImage(canvas, 0, 0, 1280, 720, 0, 0, 1280, 720);
+	ctx.globalCompositeOperation = drawingMode === "add" ? "source-over" : "destination-out";
+	ctx.clearRect(0, 0, canvas.width, canvas.height);
+}
+
+var minSec = 5
+var maxSec = 10
+function changePicture() {
+	var url = "";
+	var w = 1280;
+	var h = 720;
+	switch (Math.floor(Math.random() * 3)) {
+	case 1: url =  "https://source.unsplash.com/user/erondu/" + w + "x" + h; break;
+	case 2: url = "https://picsum.photos/" + w + "/" + h + "/?random";break
+	case 3: url = "http://lorempixel.com/g/" + w + "/" + h + "/";break
+	default:url = "http://lorempixel.com/g/" + w + "/" + h + "/";}
+	console.log(url + "#" + new Date().getTime())
+	$('picture').src = url + "#" + new Date().getTime();
+	var offscreen_data = ctx.getImageData(0, 0, canvas.width, canvas.height);
+	copyToBack()
+	setTimeout(() => {changePicture()}, 1000 * minSec + (Math.random() * 1000 * maxSec))	
+}
+console.log("la")
+changePicture()
+
+canvas.onmousedown = function (e) {
+	if (drawing) return false;
+  drawing = true;
+  last = mouse;
+  ctx.globalCompositeOperation = drawingMode === "add" ? "source-over" : "destination-out";
+  ctx.strokeStyle = drawingMode === "add" ? fillColor : "rgba(0,0,0,1)";
+  };
+
+function mouve(e) {
+    if (!drawing) return false;
+  ctx.beginPath();
+  
+	ctx.moveTo(mouse.x,mouse.y);
+	ctx.lineTo(last.x,last.y);
+	ctx.stroke();
+  ctx.closePath();
+  last = mouse
+};
+canvas.onmousemove = mouve
+
+
+canvas.onmouseleave = function(e) {
+ console.log("exit")
+ setTimeout(() => {mouve(e); drawing = false}, 10)
+}
+
+canvas.onmouseenter = function(e) {
+	if (mouseDown !== 1) {
+		drawing = false
+	} else {
+	console.log("mouseDown")
+	 drawing = true;
+	}
+	last = getMouseCoordinate.call(this, e)
+}
+
+canvas.onmouseup = function (e) {
+  drawing = false;
+};
+
+var eraseB = $('erase')
+eraseB.onclick = function () {
+	drawing = false
+    drawingMode = (drawingMode !== "delete") ? "delete" : "add";
+	if (drawingMode === "delete") {
+		eraseB.src = "img/pen.png"
+		ctx.lineWidth = gommeWidth;
+		
+	} else {
+		eraseB.src = "img/gomme.png"
+		ctx.lineWidth = pencilWidth;
+	}
+};
+
+
+clearB.onclick = function() {
+	if (confirm('Tout dessin non enregistre sera perdu.')) {
+		ctx.clearRect(0, 0, canvas.width, canvas.height);
+		ctxBack.clearRect(0, 0, canvasBack.width, canvasBack.height);
+	}
+}
+
+saveB.onclick = function() {
+	copyToBack()
+	Canvas2Image.saveAsPNG(canvasBack);
+}
+
+//Effacer
+//Sauver
+//Gomme + grosse que pinceau
+
+</script>
+
+</body>
+</html>
+<style>
+	.canvas-container {
+	}
+	img {
+		position: absolute;
+		top: 0px;
+		left: 0px;
+	}
+</style>

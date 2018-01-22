@@ -1,0 +1,142 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//FR" >
+
+<html lang="fr">
+  <head>
+    <meta charset="utf-8">
+    <title>Générateur d'identité</title> 													<!-- TITRE -->
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js"></script>
+  </head>
+  <body>
+	<div id="contour">
+		<div id="banniere">
+			<h1>GÉNÉRER UNE IDENTITÉ</h1>
+		<div>
+		<div id="genreSelecteur">
+			<h2> Vous êtes :</h2>
+			<form action="" style="align-content: center">
+				<input type="radio" name="gender" value="female" id="radioFemme"  checked="checked"><label id="radioText" for="radioFemme"> UNE FEMME</label> <br>
+				<input  type="radio" name="gender" value="male" id="radioHomme"><label id="radioText" for="radioHomme"> UN HOMME</label>
+			</form>
+			<button type="button" id="button" onclick="generer()">GÉNÉRER</button>
+		</div>
+		<div id="generated" style="display: none">
+			<img id="face"/ >
+			<h2 id="name"></h2>
+			<button type="button" id="button" onclick="recommencer()">RECOMMENCER</button>
+		</div>
+	</div>
+  </body>
+  
+  <script>
+	
+	function generer() {
+		var genre = ""
+		var gender = ""
+		var max = 0
+		if (document.getElementById("radioFemme").checked) {
+			genre = "femmes"
+			gender = "female"
+			max = 50
+		} else {
+			genre = "hommes"
+			gender = "male"
+			max = 50
+		}
+		var file = genre + "/" + "face (" + Math.ceil(Math.random() * max) + ").png"
+		console.log(file)
+		document.getElementById("face").src = file
+		document.getElementById("generated").style.display = 'flex'
+		document.getElementById("genreSelecteur").style.display = 'none'
+		function requestID(genre) {
+			do {			
+				var xhttp = new XMLHttpRequest();
+				xhttp.open("GET", "https://randomuser.me/api/?inc=gender,name&results=10", false);
+				xhttp.setRequestHeader("Content-type", "application/json");
+				xhttp.send();
+				var response = JSON.parse(xhttp.responseText);
+				console.log(response)
+				response = response.results.find((rep) => {
+					return (rep.gender === genre)
+				})
+			} while (!response)
+			return (response)
+		}
+		var name = requestID(gender).name.first
+
+		document.getElementById("name").innerHTML  = name
+		console.log(name)
+	}
+	function recommencer() {
+		document.getElementById("generated").style.display = 'none'
+		document.getElementById("genreSelecteur").style.display = 'flex'
+	}
+  
+  </script>
+  
+  <style>
+	@font-face {
+	  font-family: 'lemon';
+	  src: url('LemonMilk.otf');
+	}
+	#contour {
+		margin: 20px;
+		padding: 10px;
+		border-style: solid;
+		border-width: 5px;
+		border-color: white;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		flex-direction: column;
+	}
+	body {
+		background-color: black
+	}
+
+	#face {
+		height: 60%;
+	}
+	#genreSelecteur {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		flex-direction: column;
+	}
+	#generated {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		flex-direction: column;
+	}
+	h1 {
+		text-align: center;
+		color: white;
+		font-family: "lemon";
+		font-size: 200%;
+	}
+	h2 {
+		text-align: center;
+		color: white;
+		font-family: "lemon";
+		font-size: 200%;
+	}
+	#radioText {
+		text-align: center;
+		color: white;
+		font-family: "lemon";
+		font-size: 150%;
+	}
+	#button {
+		color: black;
+		background-color: white;
+		border-style: outset;
+		border-width: 5px;
+		border-color: grey;
+		font-family: "lemon";
+		font-size: 200%;
+		margin: 10px;
+		margin-top: 20px;
+=	}
+  </style>
+</html>
