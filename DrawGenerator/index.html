@@ -4,7 +4,7 @@
  <title>Generateur de dessin</title>
 </head>
 <body onmousemove="mouse_position(event)">
-      
+<input type="image" src="img/arrow.png" id="back"  onclick="if (confirm('Tout dessin non enregistre sera perdu.')){window.location='../index.html';}" style="position: absolute;width: 50px; height:50px; left: 50px;" /> 
 <div class="canvas-container" style="width: 1280px; height: 720px; position: relative; top: 100px; left: 100px; -moz-user-select: none;">
 <img id="picture" >
 <img id="pictureBack" src="img/back.png">
@@ -56,9 +56,11 @@ function mouse_position(e)
 
 var mouseDown = 0;
 document.body.onmousedown = function() { 
+  console.log("down")
   mouseDown = 1;
 }
 document.body.onmouseup = function() {
+  console.log("up")
   mouseDown = 0;
 }
 
@@ -69,8 +71,8 @@ function copyToBack() {
 	ctx.clearRect(0, 0, canvas.width, canvas.height);
 }
 
-var minSec = 5
-var maxSec = 10
+var minSec = 3
+var maxSec = 6
 function changePicture() {
 	var url = "";
 	var w = 1280;
@@ -80,13 +82,11 @@ function changePicture() {
 	case 2: url = "https://picsum.photos/" + w + "/" + h + "/?random";break
 	case 3: url = "http://lorempixel.com/g/" + w + "/" + h + "/";break
 	default:url = "http://lorempixel.com/g/" + w + "/" + h + "/";}
-	console.log(url + "#" + new Date().getTime())
 	$('picture').src = url + "#" + new Date().getTime();
 	var offscreen_data = ctx.getImageData(0, 0, canvas.width, canvas.height);
 	copyToBack()
 	setTimeout(() => {changePicture()}, 1000 * minSec + (Math.random() * 1000 * maxSec))	
 }
-console.log("la")
 changePicture()
 
 canvas.onmousedown = function (e) {
@@ -111,7 +111,6 @@ canvas.onmousemove = mouve
 
 
 canvas.onmouseleave = function(e) {
- console.log("exit")
  setTimeout(() => {mouve(e); drawing = false}, 10)
 }
 
@@ -119,7 +118,6 @@ canvas.onmouseenter = function(e) {
 	if (mouseDown !== 1) {
 		drawing = false
 	} else {
-	console.log("mouseDown")
 	 drawing = true;
 	}
 	last = getMouseCoordinate.call(this, e)
@@ -165,11 +163,26 @@ saveB.onclick = function() {
 </body>
 </html>
 <style>
+ @font-face {
+	  font-family: 'lemon';
+	  src: url('LemonMilk.otf');
+	}
+	html, body {
+		background-color: black;
+		width: 100%;
+		height: 100%;
+	}
 	.canvas-container {
 	}
 	img {
 		position: absolute;
 		top: 0px;
 		left: 0px;
+	}
+	#button {
+		background-color: white;
+		margin: 10px;
+		padding: 10px;
+		border-radius: 4px;
 	}
 </style>
