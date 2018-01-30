@@ -50,6 +50,7 @@ var Canvas2Image = function () {
 		link.href = strData;
 		document.body.appendChild(link);
 		link.click();
+		return strData
 	}
 
 	function genImage(strData) {
@@ -87,7 +88,7 @@ var Canvas2Image = function () {
 
 	/**
 	 * create bitmap image
-	 * °´ÕÕ¹æÔòÉú³ÉÍ¼Æ¬ÏìÓ¦Í·ºÍÏìÓ¦Ìå
+	 * ï¿½ï¿½ï¿½Õ¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¼Æ¬ï¿½ï¿½Ó¦Í·ï¿½ï¿½ï¿½ï¿½Ó¦ï¿½ï¿½
 	 */
 	var genBitmapImage = function (data) {
 		var imgHeader = [],
@@ -124,7 +125,7 @@ var Canvas2Image = function () {
 		imgInfoHeader.push(0);
 		imgInfoHeader.push(0);
 
-		// ºáÏòinfo
+		// ï¿½ï¿½ï¿½ï¿½info
 		var _width = width;
 		imgInfoHeader.push(_width % 256);
 		_width = Math.floor(_width / 256);
@@ -134,7 +135,7 @@ var Canvas2Image = function () {
 		_width = Math.floor(_width / 256);
 		imgInfoHeader.push(_width % 256);
 
-		// ×ÝÏòinfo
+		// ï¿½ï¿½ï¿½ï¿½info
 		var _height = height;
 		imgInfoHeader.push(_height % 256);
 		_height = Math.floor(_height / 256);
@@ -209,11 +210,12 @@ var Canvas2Image = function () {
 				var data = getImageData(scaleCanvas(canvas, width, height));
 				var strData = genBitmapImage(data);
 				saveFile(makeURI(strData, downloadMime));
+				return strData
 			} else {
 				var strData = getDataURL(canvas, type, width, height);
 				saveFile(strData.replace(type, downloadMime));
+				return strData
 			}
-		
 		}
 	}
 

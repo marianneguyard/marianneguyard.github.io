@@ -3,19 +3,29 @@
 <head>
  <title>Generateur de dessin</title>
 </head>
-<body onmousemove="mouse_position(event)">
-<input type="image" src="img/arrow.png" id="back"  onclick="if (confirm('Tout dessin non enregistre sera perdu.')){window.location='../index.html';}" style="position: absolute;width: 50px; height:50px; left: 50px;" /> 
-<div class="canvas-container" style="width: 1280px; height: 720px; position: relative; top: 100px; left: 100px; -moz-user-select: none;">
-<img id="picture" >
-<img id="pictureBack" src="img/back.png">
-<canvas id="c" width="1280" height="720" style="border: 1px solid rgb(170, 170, 170); position: absolute; width: 1280px; height: 720px; left: 0px; top: 0px;" />
+<body>
+<input type="image" src="img/arrow.png" id="back"  onclick="if (confirm('Tout dessin non enregistre sera perdu.')){window.location='../index.html';}" style="width: 50px; height:50px; left: 50px;" /> 
+<div style="position: relative; margin-left:100px" >
+	<div id="getmouse" class="canvas-container" style="width: 1280px; height: 720px; -moz-user-select: none;">
+		<div >
+			<img class="canvas-img" id="picture" >
+			<img class="canvas-img" id="pictureBack" src="img/back.png">
+			<canvas id="c" width="1280" height="720" style="border: 1px solid rgb(170, 170, 170); position: absolute; width: 1280px; height: 720px; left: 0px; top: 0px;" />
+		</div>
+		<canvas id="a" width="1280" height="720" style="border: 1px solid rgb(170, 170, 170); position: absolute; width: 1280; height: 720; left: 0px; top: 0px" ></canvas>
+	</div>
+	<div style="margin-top: 10px; display:flex; flex-direction: row; justify-content: left; align-items: center; background-color: black">  
+	<input type="image" src="img/gomme.png" id="erase" style="width: 50px; height:50px;" />
+	<input type="image" src="img/save.png" id="save" style="width: 50px; height:50px;" />
+	<input type="image" src="img/trash.png" id="clear" style="width: 50px; height:50px;" />
+	</div>
 </div>
-<canvas id="a" width="1280" height="720" style="border: 1px solid rgb(170, 170, 170); position: absolute; width: 1280; height: 720; left: 108px; top: 108px;" ></canvas>
-
-<div style="position: absolute; top: 840px; left: 100px; margin-top: 10px; display:flex; flex-direction: row; justify-content: left; align-items: center, background-color: black">  
-  <input type="image" src="img/gomme.png" id="erase" style="width: 50px; height:50px;" />
-  <input type="image" src="img/save.png" id="save" style="width: 50px; height:50px;" />
-  <input type="image" src="img/trash.png" id="clear" style="width: 50px; height:50px;" />
+<h1>GALERIE</h1>
+<div class="row">
+	<div id="col1" class="column">
+	</div>
+	<div id="col2" class="column">
+	</div>
 </div>
 
 <script src="js/canvas2image.js"></script>
@@ -40,29 +50,58 @@ ctx.strokeStyle = fillColor;
 ctx.lineWidth = pencilWidth;
 ctx.lineCap="round";
 var last = {x : -1, y: 0}
+var lastScroll = {x : -1, y: 0}
+
 var mouse = {x: 0, y: 0}
 
-var getMouseCoordinate = function (evt) {
-	return {
-    x : evt.pageX - 108,
-    y : evt.pageY - 108
-  };
-};
-function mouse_position(e)
-{
-	mouse = getMouseCoordinate(e)
+
+var getMouse = document.getElementById('getmouse'); 
+getMouse.onmousemove = function(e) { 
+    var rect = e.target.getBoundingClientRect();
+	var scrollTop = document.documentElement.scrollTop;
+	var scrollLeft = document.documentElement.scrollLeft;	
+	lastScroll.x = scrollLeft;
+	lastScroll.y = scrollTop;
 	
+	var x = e.pageX - rect.left - scrollLeft;
+    var y = e.pageY - rect.top - scrollTop;
+	mouse = {x: x, y: y};
 }
 
 var mouseDown = 0;
 document.body.onmousedown = function() { 
-  console.log("down")
   mouseDown = 1;
 }
 document.body.onmouseup = function() {
-  console.log("up")
   mouseDown = 0;
 }
+
+
+function fileExit(url) 
+{
+   	var img = document.createElement("img"); 
+   	img.setAttribute('src', url);
+	img.src = url;
+   	return (img.height != 0) ? img : null
+}
+
+function getGallery() {
+	var col = [$("col1"), $("col2")];
+	var root = "gallery/"
+	var extention = ".png"
+
+	var i = 1;
+	while ((img = fileExit(root + i + extention))) {
+		col[(i - 1) % 2].appendChild(img)
+		i = i + 1;
+	}
+}
+
+document.addEventListener("DOMContentLoaded", function(event) {
+	getGallery()	
+});
+
+
 
 function copyToBack() {
 	ctx.globalCompositeOperation = "destination-out";
@@ -82,7 +121,6 @@ function changePicture() {
 	case 2: url = "https://picsum.photos/" + w + "/" + h + "/?random";break
 	case 3: url = "http://lorempixel.com/g/" + w + "/" + h + "/";break
 	default:url = "http://lorempixel.com/g/" + w + "/" + h + "/";}
-	console.log(url)
 	$('picture').src = url + "#" + new Date().getTime();
 	var offscreen_data = ctx.getImageData(0, 0, canvas.width, canvas.height);
 	copyToBack()
@@ -92,7 +130,7 @@ changePicture()
 
 canvas.onmousedown = function (e) {
 	if (drawing) return false;
-  drawing = true;
+  drawing = true;   
   last = mouse;
   ctx.globalCompositeOperation = drawingMode === "add" ? "source-over" : "destination-out";
   ctx.strokeStyle = drawingMode === "add" ? fillColor : "rgba(0,0,0,1)";
@@ -101,6 +139,8 @@ canvas.onmousedown = function (e) {
 function mouve(e) {
     if (!drawing) return false;
   ctx.beginPath();
+  var scrollTop = document.documentElement.scrollTop;
+  var scrollLeft = document.documentElement.scrollLeft; 
   
 	ctx.moveTo(mouse.x,mouse.y);
 	ctx.lineTo(last.x,last.y);
@@ -121,7 +161,6 @@ canvas.onmouseenter = function(e) {
 	} else {
 	 drawing = true;
 	}
-	last = getMouseCoordinate.call(this, e)
 }
 
 canvas.onmouseup = function (e) {
@@ -152,7 +191,7 @@ clearB.onclick = function() {
 
 saveB.onclick = function() {
 	copyToBack()
-	Canvas2Image.saveAsPNG(canvasBack);
+	var retour = Canvas2Image.saveAsPNG(canvasBack);
 }
 
 
@@ -165,6 +204,13 @@ saveB.onclick = function() {
 	  font-family: 'lemon';
 	  src: url('LemonMilk.otf');
 	}
+	h1 {
+		margin-top: 100px;
+		text-align: center;
+		color: white;
+		font-family: "lemon";
+		font-size: 200%;
+	}
 	html, body {
 		background-color: black;
 		width: 100%;
@@ -172,7 +218,7 @@ saveB.onclick = function() {
 	}
 	.canvas-container {
 	}
-	img {
+	.canvas-img {
 		position: absolute;
 		top: 0px;
 		left: 0px;
@@ -182,5 +228,24 @@ saveB.onclick = function() {
 		margin: 10px;
 		padding: 10px;
 		border-radius: 4px;
+	}
+	.row {
+		margin: 50px;
+		background-color:gainsboro;
+		display: flex;
+  		flex-wrap: wrap;
+  		padding: 4px;
+	}
+	.column {
+		flex: 20%;
+		padding: 4px;
+	}
+	.column img {
+		max-width: 96%;
+ 		margin: 8px;
+  		vertical-align: middle;
+		border-style: solid;
+		border-width: 3px;
+		border-color: black;
 	}
 </style>
