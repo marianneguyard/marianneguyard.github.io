@@ -3,13 +3,10 @@
 <head>
  <title>Generateur de dessin</title>
   <script src="js/jquery.min.js"></script>
- <link    href="nano_photos_provider2/dist/css/nanogallery2.min.css" rel="stylesheet" type="text/css"\>
-<script  type="text/javascript"src="nano_photos_provider2/dist/jquery.nanogallery2.min.js"></script>
+ <link    href="js/dist/css/nanogallery2.min.css" rel="stylesheet" type="text/css"\>
+<script  type="text/javascript"src="js/dist/jquery.nanogallery2.min.js"></script>
 </head>
 <body>
-<div id="nanogallery2" >
-    
-  </div>
 <input type="image" src="img/arrow.png" id="back"  onclick="if (confirm('Tout dessin non enregistre sera perdu.')){window.location='../index.html';}" style="width: 50px; height:50px; left: 50px;" /> 
 <div style="position: relative; margin-left:100px" >
 	<div id="getmouse" class="canvas-container" style="width: 1280px; height: 720px; -moz-user-select: none;">
@@ -27,13 +24,7 @@
 	</div>
 </div>
 <h1>GALERIE</h1>
-<div class="row">
-	<div id="col1" class="column">
-	</div>
-	<div id="col2" class="column">
-	</div>
-</div>
-
+<div id="nanogallery2" ></div>
 <script src="js/canvas2image.js"></script>
 
 <script id="main">
@@ -42,9 +33,9 @@ jQuery(document).ready(function () {
               jQuery("#nanogallery2").nanogallery2({
                 thumbnailWidth:   'auto',
                 thumbnailHeight:  150,
-                kind:             'nano_photos_provider2',
-                dataProvider:     'https://raw.githubusercontent.com/marianneguyard/marianneguyard.github.io/master/DrawGenerator/nano_photos_provider2/nano_photos_provider2.php',
-                locationHash:     false
+                 kind: 'flickr',
+				userID: '159485504@N07',
+				photoset: 'none',
               });
             });
   var $ = function(id){return document.getElementById(id)};
@@ -92,30 +83,6 @@ document.body.onmouseup = function() {
   mouseDown = 0;
 }
 
-
-function fileExit(url) 
-{
-   	var img = document.createElement("img"); 
-   	img.setAttribute('src', url);
-	img.src = url;
-   	return (img.height != 0) ? img : null
-}
-
-function getGallery() {
-	var col = [$("col1"), $("col2")];
-	var root = "gallery/"
-	var extention = ".png"
-
-	var i = 1;
-	while ((img = fileExit(root + i + extention))) {
-		col[(i - 1) % 2].appendChild(img)
-		i = i + 1;
-	}
-}
-
-document.addEventListener("DOMContentLoaded", function(event) {
-	getGallery()	
-});
 
 
 
