@@ -2,8 +2,19 @@
 <html>
 <head>
  <title>Generateur de dessin</title>
+  <script src="js/jquery.min.js"></script>
+ <link    href="nano_photos_provider2/dist/css/nanogallery2.min.css" rel="stylesheet" type="text/css"\>
+<script  type="text/javascript"src="nano_photos_provider2/dist/jquery.nanogallery2.min.js"></script>
 </head>
 <body>
+<div id="nanogallery2" data-nanogallery2 = '{
+          "thumbnailHeight":  150,
+          "thumbnailWidth":   150,
+          "itemsBaseURL":     "nano_photos_provider2/nano_photos_content/"
+        }' >
+    
+    <a href="berlin3.jpg" data-ngThumb="berlin2_t.jpg"> Berlin 3 </a>
+  </div>
 <input type="image" src="img/arrow.png" id="back"  onclick="if (confirm('Tout dessin non enregistre sera perdu.')){window.location='../index.html';}" style="width: 50px; height:50px; left: 50px;" /> 
 <div style="position: relative; margin-left:100px" >
 	<div id="getmouse" class="canvas-container" style="width: 1280px; height: 720px; -moz-user-select: none;">
@@ -31,6 +42,16 @@
 <script src="js/canvas2image.js"></script>
 
 <script id="main">
+
+jQuery(document).ready(function () {
+              jQuery("#nanogallery2").nanogallery2({
+                thumbnailWidth:   'auto',
+                thumbnailHeight:  150,
+                kind:             'nano_photos_provider2',
+                dataProvider:     'nano_photos_provider2/nano_photos_provider2.php',
+                locationHash:     false
+              });
+            });
   var $ = function(id){return document.getElementById(id)};
   var clearEl = $('clear-canvas');
 	  var writeB = $('write')
