@@ -7,13 +7,8 @@
 <script  type="text/javascript"src="nano_photos_provider2/dist/jquery.nanogallery2.min.js"></script>
 </head>
 <body>
-<div id="nanogallery2" data-nanogallery2 = '{
-          "thumbnailHeight":  150,
-          "thumbnailWidth":   150,
-          "itemsBaseURL":     "nano_photos_provider2/nano_photos_content/"
-        }' >
+<div id="nanogallery2" >
     
-    <a href="berlin3.jpg" data-ngThumb="berlin2_t.jpg"> Berlin 3 </a>
   </div>
 <input type="image" src="img/arrow.png" id="back"  onclick="if (confirm('Tout dessin non enregistre sera perdu.')){window.location='../index.html';}" style="width: 50px; height:50px; left: 50px;" /> 
 <div style="position: relative; margin-left:100px" >
@@ -48,7 +43,7 @@ jQuery(document).ready(function () {
                 thumbnailWidth:   'auto',
                 thumbnailHeight:  150,
                 kind:             'nano_photos_provider2',
-                dataProvider:     'nano_photos_provider2/nano_photos_provider2.php',
+                dataProvider:     'https://raw.githubusercontent.com/marianneguyard/marianneguyard.github.io/master/DrawGenerator/nano_photos_provider2/nano_photos_provider2.php',
                 locationHash:     false
               });
             });
