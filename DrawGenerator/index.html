@@ -122,20 +122,18 @@ document.addEventListener('keydown', function(event) {
     }
 });
 
-canvas.onmousedown = function (e) {
+canvas.onmousedown = function(e) {
 	if (drawing) return false;
   drawing = true;   
   last = mouse;
   ctx.globalCompositeOperation = drawingMode === "add" ? "source-over" : "destination-out";
   ctx.strokeStyle = drawingMode === "add" ? fillColor : "rgba(0,0,0,1)";
   };
-
 function mouve(e) {
     if (!drawing) return false;
   ctx.beginPath();
   var scrollTop = document.documentElement.scrollTop;
   var scrollLeft = document.documentElement.scrollLeft; 
-  
 	ctx.moveTo(mouse.x,mouse.y);
 	ctx.lineTo(last.x,last.y);
 	ctx.stroke();
@@ -150,6 +148,9 @@ canvas.onmouseleave = function(e) {
 }
 
 canvas.onmouseenter = function(e) {
+	getMouse.onmousemove(e);
+	  last = mouse;
+	console.log("last : " + last.y);
 	if (mouseDown !== 1) {
 		drawing = false
 	} else {
@@ -204,24 +205,50 @@ saveB.onclick = function() {
 		color: white;
 		font-family: "lemon";
 		font-size: 200%;
+		 user-select: none;
+   -o-user-select:none;
+   -moz-user-select: none;
+   -khtml-user-select: none;
+   -webkit-user-select: none;
 	}
 	html, body {
 		background-color: black;
 		width: 100%;
 		height: 100%;
+		 user-select: none;
+   -o-user-select:none;
+   -moz-user-select: none;
+   -khtml-user-select: none;
+   -webkit-user-select: none;
 	}
 	.canvas-container {
+	 user-select: none;
+   -o-user-select:none;
+   -moz-user-select: none;
+   -khtml-user-select: none;
+   -webkit-user-select: none;
 	}
+
 	.canvas-img {
 		position: absolute;
 		top: 0px;
 		left: 0px;
+		 user-select: none;
+   -o-user-select:none;
+   -moz-user-select: none;
+   -khtml-user-select: none;
+   -webkit-user-select: none;
 	}
 	#button {
 		background-color: white;
 		margin: 10px;
 		padding: 10px;
 		border-radius: 4px;
+		 user-select: none;
+   -o-user-select:none;
+   -moz-user-select: none;
+   -khtml-user-select: none;
+   -webkit-user-select: none;
 	}
 	.row {
 		margin: 50px;
@@ -229,10 +256,20 @@ saveB.onclick = function() {
 		display: flex;
   		flex-wrap: wrap;
   		padding: 4px;
+		 user-select: none;
+   -o-user-select:none;
+   -moz-user-select: none;
+   -khtml-user-select: none;
+   -webkit-user-select: none;
 	}
 	.column {
 		flex: 20%;
 		padding: 4px;
+		 user-select: none;
+   -o-user-select:none;
+   -moz-user-select: none;
+   -khtml-user-select: none;
+   -webkit-user-select: none;
 	}
 	.column img {
 		max-width: 96%;
@@ -241,5 +278,10 @@ saveB.onclick = function() {
 		border-style: solid;
 		border-width: 3px;
 		border-color: black;
+		 user-select: none;
+   -o-user-select:none;
+   -moz-user-select: none;
+   -khtml-user-select: none;
+   -webkit-user-select: none;
 	}
 </style>
