@@ -115,6 +115,13 @@ function changePicture() {
 }
 changePicture()
 
+document.addEventListener('keydown', function(event) {
+    console.log(event.keyCode);
+	if(event.keyCode == 80) {
+        changePicture();
+    }
+});
+
 canvas.onmousedown = function (e) {
 	if (drawing) return false;
   drawing = true;   
