@@ -96,6 +96,7 @@ function copyToBack() {
 var minSec = 30
 var maxSec = 60
 function changePicture() {
+	console.log("changement d'image: " + new Date().toString());
 	var url = "";
 	var w = 1280;
 	var h = 720;
@@ -104,7 +105,10 @@ function changePicture() {
 	case 2: url = "https://picsum.photos/" + w + "/" + h + "/?random";break
 	case 3: url = "http://lorempixel.com/g/" + w + "/" + h + "/";break
 	default:url = "http://lorempixel.com/g/" + w + "/" + h + "/";}
+	console.log("base url: " + url);
 	$('picture').src = url + "#" + new Date().getTime();
+	console.log("final url: " + url + "#" + new Date().getTime());
+	
 	var offscreen_data = ctx.getImageData(0, 0, canvas.width, canvas.height);
 	copyToBack()
 	setTimeout(() => {changePicture()}, 1000 * minSec + (Math.random() * 1000 * maxSec))	
