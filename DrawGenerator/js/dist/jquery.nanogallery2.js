@@ -398,7 +398,7 @@
             this.mediaMarkup =          '';
             this.G =                    null;     // pointer to global instance
             this.title =                '';       // image title
-            this.description =          '';       // image description
+			this.description =          '';       // image description
             this.albumID =              0;        // ID of the parent album
             this.src =                  '';       // full sized image URL
             this.width =                0;        // image width
@@ -15233,7 +15233,7 @@ if (typeof define === 'function' && define.amdDISABLED) {
       thumbAvailableSizes :     new Array(75, 100, 150, 240, 500, 640),
       thumbAvailableSizesStr :  new Array('sq', 't', 'q', 's', 'm', 'z'),
       photoSize :               '0',
-      photoAvailableSizes :     new Array(75, 100, 150, 240, 500, 640, 1024, 1024, 1600, 2048, 10000),
+      photoAvailableSizes :     new Array(75, 100, 150, 240, 500, 640, 1024, 1280, 1600, 2048, 1280),
       photoAvailableSizesStr :  new Array('sq', 't', 'q', 's', 'm', 'z', 'b', 'l', 'h', 'k', 'o'),
       ApiKey :                  "2f0e634b471fdb47446abcb9c5afebdc"
     };
@@ -15260,7 +15260,7 @@ if (typeof define === 'function' && define.amdDISABLED) {
             // photos from one specific photoset
             url = Flickr.url() + "?&method=flickr.photosets.getPhotos&api_key=" + Flickr.ApiKey + "&photoset_id="+G.I[albumIdx].GetID()+"&extras=description,views,tags,url_o,url_sq,url_t,url_q,url_s,url_m,url_l,url_z,url_b,url_h,url_k&format=json";
           }
-
+console.log(url);
       if( G.O.debugMode ) { console.log('Flickr URL: ' + url); }
           
       PreloaderDisplay(true);
@@ -15376,14 +15376,22 @@ if (typeof define === 'function' && define.amdDISABLED) {
         var imgW=75, imgH=75;
         var start=Flickr.photoAvailableSizesStr.length-1;
         if( G.O.flickrSkipOriginal ) { start--; }
-        for( var i = start; i>=0 ; i-- ) {
+        console.log("True start : " + start);
+		/*for( var i = start; i>=0 ; i-- ) {
+			console.log("start : " + Flickr.photoAvailableSizesStr[i]);
+			console.log(item['url_'+Flickr.photoAvailableSizesStr[i]]);
           if( item['url_'+Flickr.photoAvailableSizesStr[i]] != undefined ) {
             imgUrl=item['url_'+Flickr.photoAvailableSizesStr[i]];
             imgW=parseInt(item['width_'+Flickr.photoAvailableSizesStr[i]]);
             imgH=parseInt(item['height_'+Flickr.photoAvailableSizesStr[i]]);
             break;
-          }
-        }
+          }*/
+		  
+		    imgUrl=item['url_o'];
+            imgW=parseInt(item['width_o']);
+            imgH=parseInt(item['height_o']);
+          
+        //}
 
         var sizes = {};
         for( var p in item ) {
