@@ -8,7 +8,7 @@
 </head>
 <body>
 <input type="image" src="img/arrow.png" id="back"  onclick="if (confirm('Tout dessin non enregistre sera perdu.')){window.location='../index.html';}" style="width: 50px; height:50px; left: 50px;" /> 
-<div style="position: relative; margin-left:100px" >
+<div style="position: relative; margin-left:100px; display: flex; flex-direction: row;" >
 	<div id="getmouse" class="canvas-container" style="width: 1280px; height: 720px; -moz-user-select: none;">
 		<div >
 			<img class="canvas-img" id="picture" >
@@ -17,14 +17,14 @@
 		</div>
 		<canvas id="a" width="1280" height="720" style="border: 1px solid rgb(170, 170, 170); position: absolute; width: 1280; height: 720; left: 0px; top: 0px" ></canvas>
 	</div>
-	<div style="margin-top: 10px; display:flex; flex-direction: row; justify-content: left; align-items: center; background-color: black">  
-	<input type="image" src="img/gomme.png" id="erase" style="width: 50px; height:50px;" />
-	<input type="image" src="img/save.png" id="save" style="width: 50px; height:50px;" />
-	<input type="image" src="img/trash.png" id="clear" style="width: 50px; height:50px;" />
+	<div style="margin: 10px; display:flex; flex-direction: column; justify-content: top; align-items: center; background-color: black">  
+	<input type="image" src="img/gomme.png" id="erase" style="width: 50px; height:50px;" title="Effacer (derniere image seulement)" />
+	<input type="image" src="img/save.png" id="save" style="width: 50px; height:50px;" title="Sauvegarder comme PNG"/>
+	<input type="image" src="img/trash.png" id="clear" style="width: 50px; height:50px;" title="Tout effacer !"/>
 	</div>
 </div>
 <h1>GALERIE</h1>
-<div id="nanogallery2" ></div>
+<div id="nanogallery2" style="width: 90%; margin-left: 5%"></div>
 <script src="js/canvas2image.js"></script>
 
 <script id="main">
@@ -168,10 +168,12 @@ eraseB.onclick = function () {
     drawingMode = (drawingMode !== "delete") ? "delete" : "add";
 	if (drawingMode === "delete") {
 		eraseB.src = "img/pen.png"
+		eraseB.title = "Dessiner"
 		ctx.lineWidth = gommeWidth;
 		
 	} else {
 		eraseB.src = "img/gomme.png"
+		eraseB.title = "Effacer (derniere image seulement)"
 		ctx.lineWidth = pencilWidth;
 	}
 };
