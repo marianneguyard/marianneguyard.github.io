@@ -95,8 +95,14 @@ function copyToBack() {
 
 var minSec = 30
 var maxSec = 60
+var nextTimeout = null;
 function changePicture() {
+	if (nextTimeout)
+		clearTimeout(nextTimeout);
+	console.log("--------------------");
 	console.log("changement d'image: " + new Date().toString());
+	var nextTime = 1000 * minSec + (Math.random() * 1000 * maxSec);
+	console.log("Prochain changement dans " + nextTime / 1000 + " secondes.");
 	var url = "";
 	var w = 1280;
 	var h = 720;
@@ -110,13 +116,13 @@ function changePicture() {
 	console.log("final url: " + url + "#" + new Date().getTime());
 	
 	var offscreen_data = ctx.getImageData(0, 0, canvas.width, canvas.height);
-	copyToBack()
-	setTimeout(() => {changePicture()}, 1000 * minSec + (Math.random() * 1000 * maxSec))	
+	copyToBack();
+	
+	nextTimeout = setTimeout(() => {changePicture()}, nextTime);
 }
 changePicture()
 
 document.addEventListener('keydown', function(event) {
-    console.log(event.keyCode);
 	if(event.keyCode == 80) {
         changePicture();
     }
@@ -150,7 +156,6 @@ canvas.onmouseleave = function(e) {
 canvas.onmouseenter = function(e) {
 	getMouse.onmousemove(e);
 	  last = mouse;
-	console.log("last : " + last.y);
 	if (mouseDown !== 1) {
 		drawing = false
 	} else {
